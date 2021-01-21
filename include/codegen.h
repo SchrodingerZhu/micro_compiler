@@ -10,10 +10,7 @@
 #include <sstream>
 namespace codegen {
     using State = std::string;
-    State create_state() {
-        static size_t COUNTER = 0;
-        return std::to_string(COUNTER++) + std::string { "#INTERNAL_VAL" } ;
-    }
+    State create_state();
     State codegen(const std::shared_ptr<parser::ParseTree>& tree,
                                             vmips::Function &function,
                                             symtable::SymTable<std::shared_ptr<vmips::VirtReg>>&,
