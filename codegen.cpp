@@ -40,7 +40,7 @@ codegen::State codegen::codegen(const std::shared_ptr<ParseTree> &tree,
                 function.call_void(write, *reg);
             } else {
                 std::cerr << "undefined variable: " << state << std::endl;
-                std::abort();
+                std::exit(1);
             }
         }
     }
@@ -48,9 +48,17 @@ codegen::State codegen::codegen(const std::shared_ptr<ParseTree> &tree,
         auto head = codegen(tree->subtrees[0], function, table, read, write);
         if (tree->subtrees.size() > 1) {
             auto value = table(head);
+            if (!value) {
+                std::cerr << "undefined variable: " << head << std::endl;
+                std::exit(1);
+            }
             for(size_t i = 2; i < tree->subtrees.size(); i += 2) {
                 auto target = codegen(tree->subtrees[i], function, table, read, write);
                 auto tmp = table(target);
+                if (!tmp) {
+                    std::cerr << "undefined variable: " << head << std::endl;
+                    std::exit(1);
+                }
                 switch (tree->subtrees[i - 1]->parsed_region[0]) {
                     case '-':
                         value = function.append<sub>(*value, *tmp);
@@ -60,7 +68,7 @@ codegen::State codegen::codegen(const std::shared_ptr<ParseTree> &tree,
                         break;
                     default:
                         std::cerr << "invalid operator: " << tree->subtrees[i - 1]->parsed_region[0] << std::endl;
-                        std::abort();
+                        std::exit(1);
                 }
             }
             auto name = create_state();
