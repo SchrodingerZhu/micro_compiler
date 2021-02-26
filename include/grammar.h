@@ -27,7 +27,7 @@ namespace grammar {
 
     RULE(Digit, CharRange<'0', '9'>)
 
-    RULE(Integer, Plus<Digit>)
+    RULE(Integer, Seq<Optional<Ord<Char<'+'>, Char<'-'>>>, Plus<Digit>>)
 
     RULE(ASCII, Ord<Alpha, Digit, Char<'_'>>)
 
