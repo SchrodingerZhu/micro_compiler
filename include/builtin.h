@@ -9,8 +9,20 @@
 
 namespace builtin {
     using namespace vmips;
-    std::shared_ptr<vmips::Function> add_read(Module & module);
-    std::shared_ptr<vmips::Function> add_write(Module & module);
+
+    /*!
+     * Add read function to the module
+     * @param module target module
+     * @return function pointer
+     */
+    std::shared_ptr <vmips::Function> add_read(Module &module);
+
+    /*!
+     * Add write function to the module
+     * @param module target module
+     * @return function pointer
+     */
+    std::shared_ptr <vmips::Function> add_write(Module &module);
 }
 
 
