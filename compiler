@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+INSTANCE=$(docker create csc4180-118010469 tail --pid 1 -f /dev/null)
+docker start $INSTANCE >/dev/null
+docker exec -i $INSTANCE /project/build/mcompiler -o /tmp/output.S < $1
+docker exec $INSTANCE /project/mipsel-linux-musl-cross/bin/mipsel-linux-musl-gcc -O3 -flto -static /tmp/output.S -o /tmp/exe
+docker exec -i $INSTANCE qemu-mipsel /tmp/exe
+docker kill $INSTANCE >/dev/null
+docker rm $INSTANCE >/dev/null
